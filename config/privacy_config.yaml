@@ -1,0 +1,48 @@
+dp:
+  delta: 1.0e-4
+  clip_norm: 1.0
+
+budget:
+  B_total: 200.0            # per-round global budget pool
+  epsilon_min: 1.0
+  epsilon_max: 12.0
+
+# RS-BS hyperparameters
+rsbs:
+  # Budget update parameters (Section 3.4.2)
+  gamma: 0.2               # budget update step size (Eq. 3-7)
+  beta: 0.3                # sensitivity weight (set 0 for ablation)
+  
+  # Reward signal parameters (Section 3.4.2)
+  alpha: 0.8               # EMA smoothing coefficient for signals
+  lambda_l: 0.5            # loss proxy weight in reward (Eq. 3-4)
+  lambda_c: 0.2            # resource cost penalty (set 0 for ablation)
+  
+  # Stage split parameters (Section 3.4.3)
+  eta0: 0.7                # base split coefficient (Eq. 3-12)
+  eta1: 0.2                # consistency signal weight for split
+  eta2: 0.1                # sensitivity suppression weight for split
+  eta_min: 0.0             # minimum split coefficient (clipping lower bound)
+  eta_max: 1.0             # maximum split coefficient (clipping upper bound)
+  
+  # Loss proxy mechanism parameters (Section 3.4.2)
+  loss_proxy:
+    enabled: true          # enable loss proxy reporting
+    C_ell: 1.0             # truncation threshold for Δℓ (Eq. 3-5)
+    epsilon_ell: 0.1       # privacy budget for loss proxy channel
+    delta_ell: 1.0e-5      # failure probability for loss proxy channel
+  
+  # Signal normalization parameters
+  norm_epsilon: 1e-8       # numerical stability term for normalization
+  norm_clip_low: 0.01      # lower bound for normalized signals
+  norm_clip_high: 0.99     # upper bound for normalized signals
+  
+  # Temperature setting (low temperature = deterministic thresholds)
+  temperature: 0.01        # low temperature for deterministic behavior
+
+# Privacy accounting method
+accounting:
+  method: "adaptive_rdp"   # use adaptive RDP accounting
+  max_alpha: 64.0          # maximum α for RDP computation
+  steps_per_round: 10      # local steps per round for accounting
+

@@ -1,0 +1,23 @@
+seed: 42
+
+dataset:
+  name: "mnist"          # "mnist" or "cifar10"
+  root: "./data/download"
+  num_classes: 10
+
+federated:
+  num_clients: 50
+  clients_per_round: 10
+  rounds: 100
+  local_epochs_up: 1      # stage-1 (upload) epochs
+  local_epochs_ft: 1      # stage-2 (fine-tune) epochs (not uploaded)
+  batch_size: 128
+  lr: 0.03
+  momentum: 0.9
+  weight_decay: 0.0
+
+model:
+  name: "lenet"          # "lenet" (mnist) or "simple_cnn" (cifar10)
+
+device:
+  use_cuda: true

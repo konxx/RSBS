@@ -1,0 +1,13 @@
+non_iid:
+  dirichlet_alpha: 1.0     # choose from {0.1, 0.3, 1.0}
+
+sensitivity:
+  levels: [0.2, 0.5, 0.8]
+  ratio:  [5,   3,   2]    # 5:3:2
+
+resources:
+  # throughput nu_k (compute speed factor) and bandwidth omega_k
+  # larger means faster; cost is inverse-related in our scoring
+  nu_range: [0.6, 1.4]
+  omega_range: [0.6, 1.4]
+
