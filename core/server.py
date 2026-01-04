@@ -10,6 +10,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
+from tqdm import tqdm
 
 from utils.metrics import compute_fairness_var
 from utils.logger import ExperimentLogger
@@ -484,7 +485,7 @@ class FederatedServer:
             projection_triggered=0.0,
         )
 
-        for t in range(1, rounds + 1):
+        for t in tqdm(range(1, rounds + 1), desc=f"Training [{strategy.name}]", unit="round"):
             selected = self._select_clients_with_forced(
                 clients_per_round=clients_per_round,
                 force_include_clients=force_include_clients,
