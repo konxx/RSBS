@@ -106,3 +106,7 @@ logs/
 # Temporary files
 tmp/
 temp/
+
+# archived files
+archive/
+

@@ -488,49 +488,51 @@ def main():
                     help="Tail K rounds for convergence metrics")
     args = ap.parse_args()
 
-    os.makedirs(args.out_dir, exist_ok=True)
+    # Create dataset-specific output directory
+    out_dir = os.path.join(args.out_dir, args.dataset)
+    os.makedirs(out_dir, exist_ok=True)
 
     print("=" * 60)
-    print("Generating paper figures...")
+    print(f"Generating paper figures for {args.dataset.upper()}...")
     print("=" * 60)
 
     # Figure 1: Non-IID / Heterogeneity
     print("\n[1/6] Generating Non-IID heterogeneity diagram...")
     try:
-        plot_noniid_heterogeneity(args.config_dir, args.out_dir)
+        plot_noniid_heterogeneity(args.config_dir, out_dir)
     except Exception as e:
         print(f"[!] Error: {e}")
 
     # Figure 2 & 3: Comparison curves
     print("\n[2-3/6] Generating comparison curves...")
     try:
-        plot_comparison_curves(args.comp_dir, args.dataset, args.out_dir, args.ignore_round0)
+        plot_comparison_curves(args.comp_dir, args.dataset, out_dir, args.ignore_round0)
     except Exception as e:
         print(f"[!] Error: {e}")
 
     # Figure 4: Pool usage
     print("\n[4/6] Generating pool usage curve...")
     try:
-        plot_pool_usage(args.comp_dir, args.dataset, args.out_dir, args.ignore_round0)
+        plot_pool_usage(args.comp_dir, args.dataset, out_dir, args.ignore_round0)
     except Exception as e:
         print(f"[!] Error: {e}")
 
     # Figure 5: Client budget evolution
     print("\n[5/6] Generating client budget evolution curve...")
     try:
-        plot_client_budget_evolution(args.dyn_dir, args.out_dir, args.dataset.upper())
+        plot_client_budget_evolution(args.dyn_dir, out_dir, args.dataset.upper())
     except Exception as e:
         print(f"[!] Error: {e}")
 
     # Figure 6: Ablation bar chart
     print("\n[6/6] Generating ablation bar chart...")
     try:
-        plot_ablation_bar(args.abl_dir, args.dataset, args.out_dir, args.tail_k, args.ignore_round0)
+        plot_ablation_bar(args.abl_dir, args.dataset, out_dir, args.tail_k, args.ignore_round0)
     except Exception as e:
         print(f"[!] Error: {e}")
 
     print("\n" + "=" * 60)
-    print(f"Done! Figures saved to: {args.out_dir}/")
+    print(f"Done! Figures saved to: {out_dir}/")
     print("=" * 60)
 
 
