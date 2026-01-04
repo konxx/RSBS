@@ -203,6 +203,7 @@ def plot_comparison_curves(comp_dir: str, dataset: str, out_dir: str, ignore_rou
     ax1.set_title(f"{dataset.upper()}: Accuracy Comparison", fontsize=14)
     ax1.legend(loc="lower right")
     ax1.grid(True, alpha=0.3)
+    fig1.tight_layout()
     out1 = os.path.join(out_dir, "fig_comparison_accuracy.png")
     fig1.savefig(out1, dpi=200, bbox_inches="tight")
     plt.close(fig1)
@@ -229,7 +230,7 @@ def plot_comparison_curves(comp_dir: str, dataset: str, out_dir: str, ignore_rou
     ax2.legend(loc="upper right")
     ax2.grid(True, alpha=0.3)
 
-    plt.tight_layout()
+    fig2.tight_layout()
     out2 = os.path.join(out_dir, "fig_comparison_fairness.png")
     fig2.savefig(out2, dpi=200, bbox_inches="tight")
     plt.close(fig2)
@@ -434,6 +435,7 @@ def plot_ablation_bar(abl_dir: str, dataset: str, out_dir: str, tail_k: int = 5,
     ax1.set_xticklabels(df["variant"], rotation=30, ha="right")
     ax1.set_ylabel("Tail-K Accuracy", fontsize=11)
     ax1.set_title("(a) Performance", fontsize=12)
+    ax1.set_ylim(0.8, 1.0)
     ax1.grid(True, axis="y", alpha=0.3)
 
     # Subplot 2: Fairness
@@ -443,6 +445,7 @@ def plot_ablation_bar(abl_dir: str, dataset: str, out_dir: str, tail_k: int = 5,
     ax2.set_xticklabels(df["variant"], rotation=30, ha="right")
     ax2.set_ylabel("Worst Client Accuracy", fontsize=11)
     ax2.set_title("(b) Fairness", fontsize=12)
+    ax2.set_ylim(0.8, 1.0)
     ax2.grid(True, axis="y", alpha=0.3)
 
     # Subplot 3: Cost
@@ -452,6 +455,7 @@ def plot_ablation_bar(abl_dir: str, dataset: str, out_dir: str, tail_k: int = 5,
     ax3.set_xticklabels(df["variant"], rotation=30, ha="right")
     ax3.set_ylabel("Mean Pool Usage", fontsize=11)
     ax3.set_title("(c) Budget Cost", fontsize=12)
+    ax3.set_ylim(0.0, 0.2)
     ax3.axhline(y=1.0, color="red", linestyle="--", linewidth=1)
     ax3.grid(True, axis="y", alpha=0.3)
 
