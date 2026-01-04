@@ -7,6 +7,7 @@ from typing import Dict, Tuple
 
 import numpy as np
 import torch
+from torch.utils.data import DataLoader
 import yaml
 
 from data import dirichlet_partition_indices, get_torchvision_dataset, make_dataloaders_for_clients
@@ -95,7 +96,20 @@ def build_world(
             nu=float(np.random.uniform(nu_lo, nu_hi)),
             omega=float(np.random.uniform(om_lo, om_hi)),
         )
-        clients[cid] = FederatedClient(cid=cid, train_loader=client_loaders[cid], hetero=hetero, device=device)
+        # Create eval_loader from client's train data for fairness metrics
+        eval_loader = DataLoader(
+            client_loaders[cid].dataset,
+            batch_size=256,
+            shuffle=False,
+            drop_last=False,
+        )
+        clients[cid] = FederatedClient(
+            cid=cid,
+            train_loader=client_loaders[cid],
+            hetero=hetero,
+            device=device,
+            eval_loader=eval_loader,
+        )
 
     model = build_model(base_cfg["model"]["name"], num_classes=bundle.num_classes)
 

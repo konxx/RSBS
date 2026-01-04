@@ -52,9 +52,11 @@ class FederatedClient:
         train_loader: DataLoader,
         hetero: ClientHeterogeneity,
         device: torch.device,
+        eval_loader: Optional[DataLoader] = None,
     ):
         self.cid = int(cid)
         self.train_loader = train_loader
+        self.eval_loader = eval_loader
         self.hetero = hetero
         self.device = device
 
@@ -205,6 +207,20 @@ class FederatedClient:
 
         # Store current loss for next round's Δℓ calculation
         self.prev_loss = post_loss
+
+        # Update EMA signals for RS-BS (fix for CSV zero values issue)
+        alpha = 0.8  # EMA smoothing coefficient
+        self.g_ema = alpha * self.g_ema + (1.0 - alpha) * update_norm
+        self.m_ema = alpha * self.m_ema + (1.0 - alpha) * max(delta_loss, 0.0)
+        self.c_ema = alpha * self.c_ema + (1.0 - alpha) * cost
+        
+        # Consistency signal: use normalized update norm as proxy
+        # Higher norm relative to history indicates higher consistency
+        if self.g_ema > 1e-8:
+            rho = min(update_norm / (self.g_ema + 1e-8), 2.0) / 2.0
+        else:
+            rho = 0.5
+        self.rho_ema = alpha * self.rho_ema + (1.0 - alpha) * rho
 
         return {
             "cid": self.cid,

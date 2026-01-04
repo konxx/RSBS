@@ -3,14 +3,14 @@ dp:
   clip_norm: 1.0
 
 budget:
-  B_total: 200.0            # per-round global budget pool
-  epsilon_min: 1.0
-  epsilon_max: 12.0
+  B_total: 80.0             # per-round global budget pool (reduced for more competition)
+  epsilon_min: 0.5          # lowered to allow more allocation variance
+  epsilon_max: 10.0         # adjusted upper bound
 
 # RS-BS hyperparameters
 rsbs:
   # Budget update parameters (Section 3.4.2)
-  gamma: 0.2               # budget update step size (Eq. 3-7)
+  gamma: 0.5               # budget update step size (increased for faster adaptation)
   beta: 0.3                # sensitivity weight (set 0 for ablation)
   
   # Reward signal parameters (Section 3.4.2)
